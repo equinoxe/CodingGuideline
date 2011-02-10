@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<ruleset name="eqCodingGuidelinesV1">
+	<description>The coding guidelines in Version 1</description>
+	
+	
+	<!--<rule ref="Generic.PHP.DisallowShortOpenTag" />
+	<rule ref="Generic.Functions.FunctionCallArgumentSpacing.NoSpaceAfterComma" />
+	<rule ref="Generic.Files.LineEndings" />
+	<rule ref="PEAR.ControlStructures.ControlSignature" />
+    -->
+    
+   <!--<rule ref="PEAR" />
+   <rule ref="Zend" />
+   <rule ref="Squiz" />
+   <rule ref="MySource" />
+   <rule ref="Generic" />-->
+    
+    <!-- Never use short tags -->
+    <rule ref="Generic.PHP.DisallowShortOpenTag" />
+    
+    <!-- Don’t end class files with the usual ?> closing tag -->
+    <rule ref="Zend.Files.ClosingTag.NotAllowed" />
+    
+    <!-- Indentation is done by steps of 4 spaces -->
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
+    <rule ref="Generic.WhiteSpace.ScopeIndent" />
+    <rule ref="PEAR.Functions.FunctionCallSignature.Indent" />
+    
+    <!-- Use the linefeed character (0x0A) to end lines -->
+    <rule ref="Generic.Files.LineEndings" />
+    
+    <!-- Add a single space after each comma delimite -->
+    <rule ref="Generic.Functions.FunctionCallArgumentSpacing.NoSpaceAfterComma" />
+    
+    <!-- Don’t put spaces after an opening parenthesis and before a closing one -->
+    
+    <!-- Add a single space around operators (==, &&, ...); -->
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing" />
+    
+    <!-- Add a single space before the opening parenthesis of a control keyword 
+         (if, else, for, while, ...) -->
+    <rule ref="PEAR.ControlStructures.ControlSignature" />
+    
+    <!-- Add a blank line before return statements; -->
+    
+    <!-- Don’t add trailing spaces at the end of lines; -->
+    
+    <!-- Use braces to indicate control structure body regardless of the number
+         of statements it contains; -->
+    <rule ref="Generic.ControlStructures.InlineControlStructure.Discouraged" />
+    
+    <!-- Put braces on their own line for classes, methods, and functions 
+         declaration; -->
+        <!-- abgedeckt durch PEAR.ControlStructures.ControlSignature-->
+    
+    <!-- Separate the conditional statement and the opening brace with a single
+         space and no blank line; -->
+        <!-- abgedeckt durch PEAR.ControlStructures.ControlSignature-->
+        
+    <!-- Declare visibility explicitly for class, methods, and properties (usage
+         of var is prohibited); -->
+         
+    <!-- Use lowercase PHP native typed constants: false, true, and null. The 
+         same goes for array(); -->
+    <rule ref="Generic.PHP.LowerCaseConstant.Found" />
+   
+    
+    <!-- Use uppercase strings for constants with words separated with 
+         underscores; -->
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
+    
+    <!-- Define one class per file; -->
+    <rule ref="Squiz.Classes.ClassDeclaration">
+        <exclude name="Squiz.Classes.ClassDeclaration.EndFileAfterCloseBrace" />
+    </rule>
+    
+    <!-- Declare class properties before methods; -->
+    <!-- Declare public methods first, then protected ones and finally private 
+         ones. -->
+         
+    <!-- Never commit a file containing commented out code -->
+    <!-- Abgedeckt durch eigenen Check -->
+
+    <!-- NAMING -->
+
+    <!-- Use camelCase, not underscores, for variable, function and method names; -->
+    <!-- Eigener Check -->
+        <!-- Variable is handled with own check -->
+    <rule ref="Squiz.Classes.ValidClassName.NotCamelCaps" />
+    
+    <!-- Use underscores for option, argument, parameter names; -->
+    
+    <!-- Use namespaces for all classes; -->
+    <!-- Use Symfony as the first namespace level; -->
+    <!-- Suffix interfaces with Interface; -->
+    <!-- Use alphanumeric characters and underscores for file names; -->
+    
+    <!-- Name a class always as its filename -->
+    <rule ref="Squiz.Classes.ClassFileName.NoMatch" />
+
+    <!-- Documentation -->
+    
+    <!-- Add PHPDoc blocks for all classes, methods, and functions; -->
+    <!--<rule ref="PEAR.Commenting.FileComment" />
+    <rule ref="PEAR.Commenting.ClassComment" />
+    <rule ref="PEAR.Commenting.FunctionComment" />
+    <rule ref="PEAR.Commenting.InlineComment" />-->
+   
+    <!-- The @package and @subpackage annotations are not used. -->
+
+
+</ruleset>
