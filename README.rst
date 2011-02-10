@@ -7,6 +7,7 @@ Installation
 ************
 
 $ cd /usr/share/php/PHP/CodeSniffer/Standards                  
+
 $ git clone git://github.com/equinoxe/CodingGuideline.git eqCodingGuideline
 
 Usage
