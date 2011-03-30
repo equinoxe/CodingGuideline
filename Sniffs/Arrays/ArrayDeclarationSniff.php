@@ -67,10 +67,16 @@ class eqCodingGuideline_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeS
 			$opener = $braces[0];
 			
 			$nestedLevel = $tokens[$stackPtr]['level'];
-			$previousArray = $phpcsFile->findPrevious(T_ARRAY, $stackPtr, $opener, false);
+			$previousArray = $stackPtr;
 			while($previousArray !== false) {
-				$nestedLevel++;
-				$previousArray = $phpcsFile->findPrevious(T_ARRAY, $previousArray-1, $opener, false);
+				$previousArray = $phpcsFile->findPrevious(T_OPEN_PARENTHESIS, $previousArray-1, $opener, false);
+				
+				if (isset($tokens[$previousArray]['parenthesis_closer'])) {
+					
+					if ($tokens[$previousArray]['parenthesis_closer'] > $stackPtr) {
+						$nestedLevel++;
+					}
+				}
 			}
 			
 			$tokens[$stackPtr]['level'] = $nestedLevel;
