@@ -61,11 +61,43 @@ class eqCodingGuideline_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeS
             $data  = array($tokens[$stackPtr]['content']);
             $phpcsFile->addError($error, $stackPtr, 'NotLowerCase', $data);
         }
-
-        $level        = $tokens[$stackPtr]['level'];
+		
+		if (isset($tokens[$stackPtr]['nested_parenthesis'])) {
+			$braces = array_keys($tokens[$stackPtr]['nested_parenthesis']);
+			$opener = $braces[0];
+			
+			$nestedLevel = $tokens[$stackPtr]['level'];
+			$previousArray = $phpcsFile->findPrevious(T_ARRAY, $stackPtr, $opener, false);
+			while($previousArray !== false) {
+				$nestedLevel++;
+				$previousArray = $phpcsFile->findPrevious(T_ARRAY, $previousArray-1, $opener, false);
+			}
+			
+			$tokens[$stackPtr]['level'] = $nestedLevel;
+		}
+		
+		$level        = $tokens[$stackPtr]['level'];
         $arrayStart   = $tokens[$stackPtr]['parenthesis_opener'];
         $arrayEnd     = $tokens[$arrayStart]['parenthesis_closer'];
         $keywordStart = $tokens[$stackPtr]['column'];
+            
+		/*$braces = array_keys($tokens[$index['index']]['nested_parenthesis']);
+		$opener = $braces[0];
+		
+		$nestedLevel = $level;
+		$previousArray = $phpcsFile->findPrevious(T_ARRAY, $index['index'], $opener, false);
+		while($previousArray !== false) {
+			$nestedLevel++;
+			$previousArray = $phpcsFile->findPrevious(T_ARRAY, $previousArray-1, $opener, false);
+		}
+		
+		echo "LEVEL $nestedLevel\n";
+		
+		$indicesStart = ($nestedLevel*4 + 4 + 1);
+		$arrowStart   = ($indicesStart + $maxLength + 1);
+		$valueStart   = ($arrowStart + 3);*/
+
+        
 
         if ($arrayStart != ($stackPtr + 1)) {
             $error = 'There must be no space between the Array keyword and the opening parenthesis';
@@ -189,9 +221,9 @@ class eqCodingGuideline_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeS
         if ($tokens[$lastContent]['line'] !== ($tokens[$arrayEnd]['line'] - 1)) {
             $error = 'Closing parenthesis of array declaration must be on a new line';
             $phpcsFile->addError($error, $arrayEnd, 'CloseBraceNewLine');
-        } else if ($tokens[$arrayEnd]['column']-1 !== $tokens[$arrayStart]['column']-6) {
-            // Check the closing bracket is lined up under the a in array.
-            $expected = $tokens[$arrayStart]['column']-6;
+        } else if ($tokens[$arrayEnd]['column']-1 !== $level * 4) {
+			
+            $expected = $level * 4;
             $found    = $tokens[$arrayEnd]['column']-1;
             $error    = 'Closing parenthesis not aligned correctly; expected %s space(s) but found %s';
             $data     = array(
@@ -410,9 +442,7 @@ class eqCodingGuideline_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeS
 
         $numValues = count($indices);
 
-        $indicesStart = ($level*4 + 4 + 1);
-        $arrowStart   = ($indicesStart + $maxLength + 1);
-        $valueStart   = ($arrowStart + 3);
+        
         foreach ($indices as $index) {
             if (isset($index['index']) === false) {
                 // Array value only.
@@ -423,6 +453,27 @@ class eqCodingGuideline_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeS
 
                 continue;
             }
+            
+            
+            /*echo "INDEX: " . $index['index'] . "\n";
+            
+            $braces = array_keys($tokens[$index['index']]['nested_parenthesis']);
+            $opener = $braces[0];
+            
+            $nestedLevel = $level;
+            $previousArray = $phpcsFile->findPrevious(T_ARRAY, $index['index'], $opener, false);
+            while($previousArray !== false) {
+				$nestedLevel++;
+				$previousArray = $phpcsFile->findPrevious(T_ARRAY, $previousArray-1, $opener, false);
+			}
+			
+			echo "LEVEL $nestedLevel\n";
+            */
+            $indicesStart = ($level*4 + 4 + 1);
+			$arrowStart   = ($indicesStart + $maxLength + 1);
+			$valueStart   = ($arrowStart + 3);
+            
+            
 
             if (($tokens[$index['index']]['line'] === $tokens[$stackPtr]['line'])) {
                 $error = 'The first index in a multi-value array must be on a new line';
