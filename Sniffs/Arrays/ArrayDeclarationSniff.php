@@ -413,10 +413,10 @@ class eqCodingGuideline_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeS
                 if ($tokens[($value['value'] - 1)]['code'] === T_WHITESPACE) {
                     // A whitespace token before this value means that the value
                     // was indented and not flush with the opening parenthesis.
-                    if ($tokens[$value['value']]['column'] !== ($keywordStart + 4)) {
+                    if ($tokens[$value['value']]['column'] !== ($level+1) * 4 + 1) {
                         $error = 'Array value not aligned correctly; expected %s spaces but found %s';
                         $data  = array(
-                                  ($keywordStart + 4),
+                                  (($level + 1) * 4) + 1,
                                   $tokens[$value['value']]['column'],
                                  );
                         $phpcsFile->addError($error, $value['value'], 'ValueNotAligned', $data);
